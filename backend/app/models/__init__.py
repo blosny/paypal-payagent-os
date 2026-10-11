@@ -86,6 +86,14 @@ from .did import (
     VerifyCredentialRequest,
     VerificationResult,
 )
+from .dispute import (
+    DisputeSpeaker,
+    DisputeStrategy,
+    DisputeRound,
+    InvoiceDisputeRecord,
+    DisputeInitiateRequest,
+)
+
 
 
 
@@ -162,6 +170,12 @@ __all__ = [
     "IssueCredentialRequest",
     "VerifyCredentialRequest",
     "VerificationResult",
+    "DisputeSpeaker",
+    "DisputeStrategy",
+    "DisputeRound",
+    "InvoiceDisputeRecord",
+    "DisputeInitiateRequest",
 ]
+
 
 

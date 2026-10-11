@@ -184,6 +184,13 @@ export const i18n = {
     btnDeptTransfer: '✓ Departman Transferini İcra Et',
     didTitle: 'W3C DID & MERKEZİYETSİZ AJAN CÜZDAN PASAPORTLARI',
     didDesc: 'CFO Elena Rostova tarafından Ed25519 ile kriptografik olarak imzalanmış Doğrulanabilir Yetki Sertifikaları. Her ajan acil durum killswitch kontrolüne sahip bir harcama pasaportu taşır.',
+    disputeTitle: 'OTONOM FATURA İTİRAZ & İNDİRİM MÜZAKERE BOTU',
+    disputeDesc: 'Otonom ajanlar, ay sonu SaaS faturalarına SLA telemetrisi, hacim taahhütleri ve atıl koltuk kanıtları ile tedarikçi API\'lerine itiraz eder; hazineye doğrudan nakit tasarrufu kazandırır.',
+    disputeTargetVendor: 'Hedef Tedarikçi Faturası',
+    disputeInvoiceAmt: 'Fatura Tutarı ($)',
+    disputeTargetDiscount: 'Hedef İndirim Oranı %',
+    disputeStrategy: 'Müzakere Stratejisi',
+    btnStartDispute: 'Otonom Müzakereyi Başlat',
   },
   en: {
     tagline: 'Autonomous AI Agent Wallet & Payment Orchestration',
@@ -364,6 +371,13 @@ export const i18n = {
     btnDeptTransfer: '✓ Execute Department Transfer',
     didTitle: 'W3C DID & DECENTRALIZED AGENT WALLET PASSPORTS',
     didDesc: 'Cryptographically signed Verifiable Credentials (Ed25519) issued by CFO Elena Rostova. Each agent holds a verifiable spending passport with emergency killswitch controls.',
+    disputeTitle: 'AUTONOMOUS INVOICE DISPUTE & DISCOUNT NEGOTIATION BOT',
+    disputeDesc: 'Autonomous agents contest end-of-month SaaS invoices against vendor billing endpoints using SLA telemetry, volume commitments, and idle seat evidence to reclaim cash alpha.',
+    disputeTargetVendor: 'Target Vendor Invoice',
+    disputeInvoiceAmt: 'Invoice Amount ($)',
+    disputeTargetDiscount: 'Target Discount %',
+    disputeStrategy: 'Negotiation Strategy',
+    btnStartDispute: 'Start Autonomous Negotiation',
   },
 };
 

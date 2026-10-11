@@ -358,6 +358,67 @@
         </p>
         <div id="did-passports-grid" class="passport-grid">
           <!-- Loaded dynamically via command_center.js -->
+      </div>
+
+      <!-- Autonomous Invoice Dispute & Negotiation Bot (Phase 7 Innovation) -->
+      <div class="cc-card" id="card-invoice-dispute" style="margin-bottom: 2rem;">
+        <div class="cc-card-header">
+          <span class="cc-card-title">
+            <span style="color: #f59e0b;">🤖</span>
+            <span data-i18n="disputeTitle">AUTONOMOUS INVOICE DISPUTE & DISCOUNT NEGOTIATION BOT</span>
+          </span>
+          <span class="top-kpi-badge badge-amber">AI MULTI-ROUND NEGOTIATOR</span>
+        </div>
+        <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.85rem;" data-i18n="disputeDesc">
+          Autonomous agents contest end-of-month SaaS invoices against vendor billing endpoints using SLA telemetry, volume commitments, and idle seat evidence to reclaim cash alpha.
+        </p>
+
+        <div class="dispute-desk-layout">
+          <!-- Left: Simulation Controls -->
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.05);">
+            <div class="field-group" style="margin-bottom: 0.75rem;">
+              <label style="font-size: 0.75rem;" data-i18n="disputeTargetVendor">Target Vendor Invoice</label>
+              <select id="dispute-vendor-select" class="fin-input">
+                <option value="Datadog APM & Logs">Datadog APM & Logs ($240.00)</option>
+                <option value="AWS CloudWatch">AWS CloudWatch Infrastructure ($180.00)</option>
+                <option value="OpenAI Platform">OpenAI Batch Inference ($500.00)</option>
+              </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <div class="field-group">
+                <label style="font-size: 0.75rem;" data-i18n="disputeInvoiceAmt">Invoice Amount</label>
+                <input type="number" id="dispute-amount-input" class="fin-input font-mono" value="240.00">
+              </div>
+              <div class="field-group">
+                <label style="font-size: 0.75rem;" data-i18n="disputeTargetDiscount">Target Discount %</label>
+                <input type="number" id="dispute-target-pct" class="fin-input font-mono" value="20" min="5" max="35">
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-bottom: 1rem;">
+              <label style="font-size: 0.75rem;" data-i18n="disputeStrategy">Negotiation Strategy</label>
+              <select id="dispute-strategy-select" class="fin-input">
+                <option value="VOLUME_COMMITMENT">Volume Commitment (Annual Run-rate)</option>
+                <option value="SLA_DOWNTIME_CREDIT">SLA Micro-Downtime Telemetry Credit</option>
+                <option value="UNUSED_SEATS_RECLAMATION">Vault Idle Seat Reclamation (Zero Calls)</option>
+              </select>
+            </div>
+
+            <button type="button" class="fin-btn fin-btn-paypal" id="btn-start-dispute" onclick="window.startLiveDisputeNegotiation()" style="width: 100%; justify-content: center; padding: 0.65rem;">
+              <span>⚡</span> <span data-i18n="btnStartDispute">Start Autonomous Negotiation</span>
+            </button>
+          </div>
+
+          <!-- Right: Live Chat & Verdict Box -->
+          <div>
+            <div id="dispute-chat-container" class="dispute-chat-box">
+              <div style="color: #64748b; font-size: 0.75rem; text-align: center; margin-top: 3rem;">
+                💬 Click "Start Autonomous Negotiation" to watch the agent negotiate live with the vendor billing bot.
+              </div>
+            </div>
+            <div id="dispute-result-banner" class="dispute-result-banner" style="display: none;"></div>
+          </div>
         </div>
       </div>
 

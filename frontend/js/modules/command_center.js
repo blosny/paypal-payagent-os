@@ -16,6 +16,7 @@ export async function initCommandCenter() {
     loadTelegramSettings(),
     loadDepartments(),
     loadDIDCredentials(),
+    loadDisputeHistory(),
   ]);
 
   setupVoiceBriefing();
@@ -692,6 +693,108 @@ window.revokeDIDCredential = async function(credentialId, agentName) {
     showToast(`Revoke error: ${err.message}`, 'error');
   }
 };
+
+// --------------------------------------------------------------------------
+// 9. Autonomous Invoice Dispute & Negotiation Bot
+// --------------------------------------------------------------------------
+export async function loadDisputeHistory() {
+  const container = document.getElementById('dispute-chat-container');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/v1/disputes/history');
+    if (!res.ok) return;
+    const history = await res.json();
+    if (history.length === 0) return;
+
+    const latest = history[history.length - 1];
+    renderDisputeRounds(latest);
+  } catch (err) {
+    console.error('Error loading dispute history:', err);
+  }
+}
+
+function renderDisputeRounds(record) {
+  const chatBox = document.getElementById('dispute-chat-container');
+  const banner = document.getElementById('dispute-result-banner');
+  if (!chatBox) return;
+
+  chatBox.innerHTML = record.rounds.map(r => {
+    const isAgent = r.speaker === 'AGENT';
+    return `
+      <div class="chat-bubble ${isAgent ? 'chat-bubble-agent' : 'chat-bubble-vendor'}">
+        <div class="chat-speaker-header">
+          <span>${isAgent ? '🤖' : '🏢'}</span>
+          <span>${r.speaker_name}</span>
+          <span style="font-family:monospace; margin-left:auto; opacity:0.8;">Offer: $${r.offered_amount.toFixed(2)}</span>
+        </div>
+        <div>${r.message}</div>
+      </div>
+    `;
+  }).join('');
+
+  if (banner) {
+    banner.style.display = 'flex';
+    banner.innerHTML = `
+      <div>
+        <span style="color:#10b981; font-weight:700;">✓ Settlement Finalized via PayPal:</span> 
+        Original <span style="text-decoration:line-through; color:#94a3b8;">$${record.original_amount.toFixed(2)}</span> 
+        → Agreed <strong style="color:#f8fafc;">$${record.agreed_amount.toFixed(2)}</strong>
+      </div>
+      <div style="font-family:monospace; color:#10b981; font-weight:700;">
+        Saved $${record.saved_amount.toFixed(2)} (${record.discount_rate_percent.toFixed(0)}% Off)
+      </div>
+    `;
+  }
+}
+
+window.startLiveDisputeNegotiation = async function() {
+  const vendor = document.getElementById('dispute-vendor-select')?.value || 'Datadog APM';
+  const amount = parseFloat(document.getElementById('dispute-amount-input')?.value || '240.00');
+  const strategy = document.getElementById('dispute-strategy-select')?.value || 'VOLUME_COMMITMENT';
+  const targetPct = parseFloat(document.getElementById('dispute-target-pct')?.value || '20');
+
+  const btn = document.getElementById('btn-start-dispute');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳</span> <span>Negotiating with Vendor Bot...</span>`;
+  }
+
+  try {
+    const res = await fetch('/api/v1/disputes/negotiate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        vendor_name: vendor,
+        invoice_ref: `INV-${vendor.substring(0, 3).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
+        original_amount: amount,
+        strategy: strategy,
+        target_discount_percent: targetPct,
+      }),
+    });
+
+    if (!res.ok) throw new Error('Negotiation failed');
+    const record = await res.json();
+
+    renderDisputeRounds(record);
+    showToast(`🎉 Settlement Reached with ${vendor}! Saved $${record.saved_amount.toFixed(2)}!`, 'success');
+
+    // Update cumulative savings if present
+    const savingsEl = document.getElementById('kpi-savings-value');
+    if (savingsEl) {
+      const current = parseFloat(savingsEl.innerText.replace(/[^0-9.]/g, '')) || 84.20;
+      savingsEl.innerText = `+$${(current + record.saved_amount).toFixed(2)}`;
+    }
+  } catch (err) {
+    showToast(`Negotiation error: ${err.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span>⚡</span> <span>Start Autonomous Negotiation</span>`;
+    }
+  }
+};
+
 
 
 
