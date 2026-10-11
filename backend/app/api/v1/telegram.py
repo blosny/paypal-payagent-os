@@ -29,7 +29,7 @@ async def list_alerts(limit: int = 20):
 @router.post("/test-alert", response_model=Optional[TelegramAlertNotification])
 async def send_test_alert(req: TestAlertRequest):
     return telegram_service.send_alert(
-        event_type="DAILY_SUMMARY",
+        event_type="HITL_PENDING",
         title="🔔 Supervisor Test Ping",
         message=req.message or "Test alert",
     )

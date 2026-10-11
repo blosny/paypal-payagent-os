@@ -105,3 +105,41 @@ def test_run_fleet_benchmark():
         assert item["optimization_id"].startswith("OPT-")
         assert item["fee_saved_usd"] >= 0
         assert item["paypal_routing_token"].startswith("PP-ROUTE-")
+
+
+def test_evaluate_batch_urgency_prefers_ach():
+    payload = {
+        "amount": 5000.00,
+        "currency": "USD",
+        "vendor_name": "Datadog Annual Platform Invoice",
+        "vendor_country": "US",
+        "urgency": "BATCH",
+        "agent_id": "agent-devops-01",
+    }
+    res = client.post("/api/v1/fees/evaluate", json=payload)
+    assert res.status_code == 200
+    data = res.json()
+    assert data["optimal_rail"] == PaymentRail.PAYPAL_ACH_BANK.value
+    assert data["standard_fee_usd"] == 145.30
+    assert data["optimal_fee_usd"] == 5.15
+    assert data["fee_saved_usd"] == 140.15
+    assert data["fee_reduction_pct"] > 95.0
+
+
+def test_micro_transaction_routing():
+    payload = {
+        "amount": 10.00,
+        "currency": "USD",
+        "vendor_name": "GitHub Copilot Extra Seat",
+        "vendor_country": "US",
+        "urgency": "INSTANT",
+        "agent_id": "agent-growth-01",
+    }
+    res = client.post("/api/v1/fees/evaluate", json=payload)
+    assert res.status_code == 200
+    data = res.json()
+    assert data["amount"] == 10.00
+    assert data["optimal_rail"] == PaymentRail.PAYPAL_BALANCE.value
+    # Balance fee on $10: 10 * 1% + 0.05 = $0.15 vs Card: 10 * 2.9% + 0.30 = $0.59
+    assert data["optimal_fee_usd"] < data["standard_fee_usd"]
+

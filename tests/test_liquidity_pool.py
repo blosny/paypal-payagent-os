@@ -86,3 +86,33 @@ def test_repay_loan():
     assert repaid_data["loan_id"] == loan_to_repay["loan_id"]
     assert repaid_data["status"] == LoanStatus.REPAID.value
     assert repaid_data["repaid_amount"] == loan_to_repay["amount"]
+
+
+def test_partial_loan_repayment():
+    # Draw a new loan of $80
+    draw_res = client.post("/api/v1/liquidity-pool/drawdown", json={
+        "borrower_agent_id": "agent-devops-01",
+        "amount": 80.00,
+        "purpose": "Spot pod test",
+    })
+    assert draw_res.status_code == 200
+    loan = draw_res.json()
+
+    # Repay only $30
+    repay_res = client.post("/api/v1/liquidity-pool/repay", json={
+        "loan_id": loan["loan_id"],
+        "amount": 30.00,
+    })
+    assert repay_res.status_code == 200
+    data = repay_res.json()
+    assert data["status"] == LoanStatus.ACTIVE.value
+    assert data["repaid_amount"] == 30.00
+
+
+def test_repay_nonexistent_loan_returns_404():
+    res = client.post("/api/v1/liquidity-pool/repay", json={
+        "loan_id": "LOAN-INVALID-999",
+        "amount": 50.00,
+    })
+    assert res.status_code == 404
+

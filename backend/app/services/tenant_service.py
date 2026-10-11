@@ -80,6 +80,8 @@ class TenantService:
             raise ValueError(f"Source department '{request.from_dept_id}' not found")
         if not to_dept:
             raise ValueError(f"Destination department '{request.to_dept_id}' not found")
+        if from_dept.id == to_dept.id:
+            raise ValueError("Source and destination departments cannot be the same")
 
         available = from_dept.allocated_budget - from_dept.spent_today
         if request.amount > available:

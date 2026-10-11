@@ -89,3 +89,28 @@ async def test_tenant_service_spend_validation():
     updated = tenant_service.record_department_spend("agent-devops", 25.0)
     assert updated is not None
     assert updated.spent_today >= 25.0
+
+
+@pytest.mark.asyncio
+async def test_transfer_same_department_fails():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        payload = {
+            "from_dept_id": "dept-eng",
+            "to_dept_id": "dept-eng",
+            "amount": 50.00,
+            "reason": "Invalid self-transfer",
+            "authorized_by": "Test Supervisor",
+        }
+        res = await ac.post("/api/v1/tenants/transfer", json=payload)
+        assert res.status_code == 400
+        assert "cannot be the same" in res.json()["detail"]
+
+
+@pytest.mark.asyncio
+async def test_get_unknown_department_returns_404():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        res = await ac.get("/api/v1/tenants/departments/dept-nonexistent-99")
+        assert res.status_code == 404
+

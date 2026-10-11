@@ -71,3 +71,32 @@ async def test_negotiate_sla_downtime_credit():
         assert data["strategy"] == "SLA_DOWNTIME_CREDIT"
         assert data["agreed_amount"] < 350.00
         assert "99.3% availability" in data["rounds"][0]["message"]
+
+
+@pytest.mark.asyncio
+async def test_negotiate_unused_seats_strategy():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        payload = {
+            "vendor_name": "Datadog APM & Tracing",
+            "invoice_ref": "INV-DDOG-9011",
+            "original_amount": 280.00,
+            "strategy": "UNUSED_SEATS_RECLAMATION",
+            "target_discount_percent": 25.0,
+        }
+        res = await ac.post("/api/v1/disputes/negotiate", json=payload)
+        assert res.status_code == 200
+        data = res.json()
+        assert data["strategy"] == "UNUSED_SEATS_RECLAMATION"
+        assert "0 active agent queries" in data["rounds"][0]["message"]
+        assert data["saved_amount"] > 0
+        assert data["status"] == "SETTLED"
+
+
+@pytest.mark.asyncio
+async def test_get_nonexistent_dispute_returns_404():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        res = await ac.get("/api/v1/disputes/DISPUTE-NONEXISTENT-999")
+        assert res.status_code == 404
+

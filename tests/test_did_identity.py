@@ -93,3 +93,20 @@ async def test_revoke_credential_killswitch():
         assert verify_data["is_valid"] is False
         assert verify_data["status"] == "REVOKED"
         assert "Suspected prompt anomaly" in verify_data["reason"]
+
+
+@pytest.mark.asyncio
+async def test_get_unknown_credential_returns_404():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        res = await ac.get("/api/v1/identity/credentials/cred-nonexistent-99")
+        assert res.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_revoke_unknown_credential_returns_404():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        res = await ac.post("/api/v1/identity/revoke/cred-nonexistent-99", json={"reason": "Test"})
+        assert res.status_code == 404
+
