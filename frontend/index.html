@@ -422,6 +422,96 @@
         </div>
       </div>
 
+      <!-- Autonomous Fee Minimizer & Smart Payment Rail Routing (Phase 7 Innovation) -->
+      <div class="cc-card" id="card-fee-optimizer" style="margin-bottom: 2rem;">
+        <div class="cc-card-header">
+          <span class="cc-card-title">
+            <span style="color: #38bdf8;">⚡</span>
+            <span data-i18n="feeOptTitle">AUTONOMOUS FEE MINIMIZER & SMART PAYMENT RAIL ROUTER</span>
+          </span>
+          <span class="top-kpi-badge badge-cyan" id="fee-opt-status-badge">0.8% ACH DIRECT ROUTED</span>
+        </div>
+        <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.85rem;" data-i18n="feeOptDesc">
+          PayAgent OS arbitrates payment gateways in real-time. By dynamically routing high-ticket compute and SaaS invoices from 2.9% cards to capped ACH or internal PayPal balances, your fleet eliminates interchange waste.
+        </p>
+
+        <div class="fee-optimizer-layout">
+          <!-- Left: Optimization Controls -->
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div class="field-group" style="margin-bottom: 0.65rem;">
+                <label style="font-size: 0.75rem;" data-i18n="feeOptAmount">Transaction Amount & Currency</label>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.5rem;">
+                  <input type="number" id="fee-amount-input" class="fin-input font-mono" value="1250.00" min="1" step="10">
+                  <select id="fee-currency-select" class="fin-input font-mono">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="TRY">TRY</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-group" style="margin-bottom: 0.65rem;">
+                <label style="font-size: 0.75rem;" data-i18n="feeOptVendor">Vendor / Merchant</label>
+                <input type="text" id="fee-vendor-input" class="fin-input" value="AWS Cloud Infrastructure">
+              </div>
+
+              <div class="field-group" style="margin-bottom: 0.85rem;">
+                <label style="font-size: 0.75rem;" data-i18n="feeOptUrgency">Settlement Urgency</label>
+                <select id="fee-urgency-select" class="fin-input">
+                  <option value="STANDARD">Standard (Cost-Optimized, ACH Eligible)</option>
+                  <option value="INSTANT">Instant (Sub-second settlement, Balance/Card)</option>
+                  <option value="BATCH">Batch (Consolidated End-of-Day Payout)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <button type="button" class="fin-btn fin-btn-paypal" id="btn-eval-fee" onclick="window.optimizeTransactionFee()" style="width: 100%; justify-content: center; padding: 0.6rem;">
+                <span>⚡</span> <span data-i18n="btnEvaluateFee">Evaluate & Route Optimal Rail</span>
+              </button>
+              <button type="button" class="fin-btn" id="btn-benchmark-fee" onclick="window.runFleetFeeBenchmark()" style="width: 100%; justify-content: center; padding: 0.5rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8;">
+                <span>📊</span> <span data-i18n="btnBenchmarkFee">Run Multi-Ticket Benchmark</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Rails Matrix & Savings Verdict -->
+          <div>
+            <div id="rail-cards-container" class="rail-comparison-grid">
+              <!-- Loaded dynamically via command_center.js -->
+            </div>
+
+            <div id="fee-verdict-banner" class="fee-savings-banner" style="display: none;"></div>
+
+            <!-- Recent Fleet Routing Log -->
+            <div style="background: rgba(15, 23, 42, 0.5); border-radius: 0.5rem; padding: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.04);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <span style="font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;" data-i18n="feeRecentLog">Fleet Routing Decision Log</span>
+                <span id="fee-total-saved-stat" style="font-size: 0.7rem; color: #34d399; font-weight: 600;">Cumulative Saved: $0.00</span>
+              </div>
+              <div style="overflow-x: auto; max-height: 140px; overflow-y: auto;">
+                <table class="fee-history-table">
+                  <thead>
+                    <tr>
+                      <th data-i18n="thVendor">Vendor</th>
+                      <th data-i18n="thAmount">Amount</th>
+                      <th data-i18n="thOptimalRail">Routed Rail</th>
+                      <th data-i18n="thSaved">Saved</th>
+                      <th data-i18n="thToken">Routing Token</th>
+                    </tr>
+                  </thead>
+                  <tbody id="fee-history-tbody">
+                    <!-- Loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="portal-grid">
         
         <!-- Left Column: Simulator & HITL Queue -->

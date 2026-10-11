@@ -93,6 +93,14 @@ from .dispute import (
     InvoiceDisputeRecord,
     DisputeInitiateRequest,
 )
+from .fee_optimizer import (
+    PaymentRail,
+    PaymentUrgency,
+    RailFeeQuote,
+    FeeOptimizationRequest,
+    FeeOptimizationResult,
+    FleetFeeSavingsSummary,
+)
 
 
 
@@ -175,6 +183,12 @@ __all__ = [
     "DisputeRound",
     "InvoiceDisputeRecord",
     "DisputeInitiateRequest",
+    "PaymentRail",
+    "PaymentUrgency",
+    "RailFeeQuote",
+    "FeeOptimizationRequest",
+    "FeeOptimizationResult",
+    "FleetFeeSavingsSummary",
 ]
 
 

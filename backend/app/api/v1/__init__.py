@@ -16,6 +16,7 @@ from .roi import router as roi_router
 from .tenants import router as tenants_router
 from .identity import router as identity_router
 from .disputes import router as disputes_router
+from .fee_optimizer import router as fee_optimizer_router
 
 api_v1_router = APIRouter(prefix="/v1")
 api_v1_router.include_router(agents_router, prefix="/agents", tags=["Agents"])
@@ -35,6 +36,7 @@ api_v1_router.include_router(roi_router)
 api_v1_router.include_router(tenants_router)
 api_v1_router.include_router(identity_router)
 api_v1_router.include_router(disputes_router)
+api_v1_router.include_router(fee_optimizer_router)
 
 
 

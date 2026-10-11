@@ -12,7 +12,7 @@ import { fetchDebts, initP2PEvents } from './modules/p2p.js';
 import { fetchSpotRates, fetchArbitrageHistory, initArbitrageEvents } from './modules/arbitrage.js';
 import { initToolkitEvents } from './modules/toolkit.js';
 import { fetchSecurityData, initSecurityEvents } from './modules/security.js';
-import { initCommandCenter, loadVaultSubscriptions, loadFICOScores, loadROIMetrics, loadDepartments, loadDIDCredentials, loadDisputeHistory } from './modules/command_center.js';
+import { initCommandCenter, loadVaultSubscriptions, loadFICOScores, loadROIMetrics, loadDepartments, loadDIDCredentials, loadDisputeHistory, loadFeeSummaryAndHistory } from './modules/command_center.js';
 
 // Unified Refresh Orchestrator
 export async function refreshAll() {
@@ -31,6 +31,7 @@ export async function refreshAll() {
     loadDepartments(),
     loadDIDCredentials(),
     loadDisputeHistory(),
+    loadFeeSummaryAndHistory(),
   ]);
 }
 

@@ -795,6 +795,175 @@ window.startLiveDisputeNegotiation = async function() {
   }
 };
 
+// --------------------------------------------------------------------------
+// 10. Autonomous Fee Minimizer & Smart Payment Rail Routing
+// --------------------------------------------------------------------------
+export async function loadFeeSummaryAndHistory() {
+  const cardsContainer = document.getElementById('rail-cards-container');
+  const tbody = document.getElementById('fee-history-tbody');
+  const savedStat = document.getElementById('fee-total-saved-stat');
+  if (!cardsContainer && !tbody) return;
+
+  try {
+    const [summaryRes, historyRes] = await Promise.all([
+      fetch('/api/v1/fees/summary'),
+      fetch('/api/v1/fees/history?limit=10'),
+    ]);
+
+    if (summaryRes.ok) {
+      const summary = await summaryRes.json();
+      if (savedStat) {
+        savedStat.innerText = `Cumulative Saved: $${summary.cumulative_fees_saved_usd.toFixed(2)}`;
+      }
+      const badge = document.getElementById('fee-opt-status-badge');
+      if (badge) {
+        badge.innerText = `${summary.average_fee_reduction_pct.toFixed(0)}% AVG FEE REDUCTION`;
+      }
+    }
+
+    if (historyRes.ok) {
+      const history = await historyRes.json();
+      if (history.length > 0) {
+        renderFeeHistory(history);
+        renderRailQuotes(history[0]);
+      }
+    }
+  } catch (err) {
+    console.error('Error loading fee optimizer:', err);
+  }
+}
+
+function renderRailQuotes(result) {
+  const container = document.getElementById('rail-cards-container');
+  const banner = document.getElementById('fee-verdict-banner');
+  if (!container) return;
+
+  container.innerHTML = result.quotes.map(q => {
+    const isOptimal = q.is_optimal;
+    return `
+      <div class="rail-card ${isOptimal ? 'optimal' : ''}">
+        <div>
+          <div class="rail-header">
+            <span class="rail-name">${q.rail_name}</span>
+            <span class="${isOptimal ? 'rail-badge-optimal' : 'rail-badge-standard'}">
+              ${isOptimal ? '✓ OPTIMAL RAIL' : q.settlement_speed}
+            </span>
+          </div>
+          <div class="rail-fee-big font-mono">$${q.total_fee_usd.toFixed(2)}</div>
+          <div style="font-size:0.68rem; color:#64748b; margin-bottom:0.35rem;">
+            Rate: ${q.fee_percentage}% + $${q.fixed_fee_usd.toFixed(2)}
+          </div>
+        </div>
+        <div class="rail-desc">${q.recommendation_reason}</div>
+      </div>
+    `;
+  }).join('');
+
+  if (banner) {
+    banner.style.display = 'flex';
+    banner.innerHTML = `
+      <div>
+        <span style="color:#10b981; font-weight:700;">⚡ Optimal Route:</span> 
+        ${result.routing_verdict}
+      </div>
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span class="fee-token-tag">${result.paypal_routing_token}</span>
+      </div>
+    `;
+  }
+}
+
+function renderFeeHistory(history) {
+  const tbody = document.getElementById('fee-history-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = history.map(item => `
+    <tr>
+      <td style="font-weight:600;">${item.vendor_name}</td>
+      <td class="font-mono">$${item.amount.toFixed(2)} ${item.currency}</td>
+      <td>
+        <span style="color:#34d399; font-weight:600;">${item.optimal_rail.replace(/_/g, ' ')}</span>
+      </td>
+      <td class="font-mono" style="color:#10b981; font-weight:700;">+$${item.fee_saved_usd.toFixed(2)} (${item.fee_reduction_pct.toFixed(0)}%)</td>
+      <td><span class="fee-token-tag">${item.paypal_routing_token}</span></td>
+    </tr>
+  `).join('');
+}
+
+window.optimizeTransactionFee = async function() {
+  const amount = parseFloat(document.getElementById('fee-amount-input')?.value || '1250');
+  const currency = document.getElementById('fee-currency-select')?.value || 'USD';
+  const vendor = document.getElementById('fee-vendor-input')?.value || 'AWS Compute';
+  const urgency = document.getElementById('fee-urgency-select')?.value || 'STANDARD';
+
+  const btn = document.getElementById('btn-eval-fee');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳</span> <span>Evaluating Rails...</span>`;
+  }
+
+  try {
+    const res = await fetch('/api/v1/fees/evaluate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: amount,
+        currency: currency,
+        vendor_name: vendor,
+        urgency: urgency,
+        agent_id: 'agent-devops-01',
+      }),
+    });
+
+    if (!res.ok) throw new Error('Fee evaluation failed');
+    const result = await res.json();
+
+    renderRailQuotes(result);
+    await loadFeeSummaryAndHistory();
+    showToast(`⚡ Optimal Rail Found: Routing via ${result.optimal_rail.replace(/_/g, ' ')} saves $${result.fee_saved_usd.toFixed(2)}!`, 'success');
+
+    const savingsEl = document.getElementById('kpi-savings-value');
+    if (savingsEl && result.fee_saved_usd > 0) {
+      const current = parseFloat(savingsEl.innerText.replace(/[^0-9.]/g, '')) || 84.20;
+      savingsEl.innerText = `+$${(current + result.fee_saved_usd).toFixed(2)}`;
+    }
+  } catch (err) {
+    showToast(`Evaluation error: ${err.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span>⚡</span> <span>Evaluate & Route Optimal Rail</span>`;
+    }
+  }
+};
+
+window.runFleetFeeBenchmark = async function() {
+  const btn = document.getElementById('btn-benchmark-fee');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳</span> <span>Benchmarking...</span>`;
+  }
+
+  try {
+    const res = await fetch('/api/v1/fees/benchmark', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!res.ok) throw new Error('Benchmark failed');
+    const results = await res.json();
+    await loadFeeSummaryAndHistory();
+    showToast(`📊 Benchmark Complete: Tested ${results.length} scenarios, optimal routing verified!`, 'success');
+  } catch (err) {
+    showToast(`Benchmark error: ${err.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span>📊</span> <span>Run Multi-Ticket Benchmark</span>`;
+    }
+  }
+};
+
+
 
 
 
