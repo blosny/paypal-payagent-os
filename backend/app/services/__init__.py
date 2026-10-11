@@ -23,6 +23,7 @@ from .tenant_service import TenantService, tenant_service
 from .did_service import DIDIdentityService, did_service
 from .dispute_service import InvoiceDisputeService, dispute_service
 from .fee_optimizer_service import FeeOptimizerService, fee_optimizer_service
+from .liquidity_pool_service import LiquidityPoolService, liquidity_pool_service
 
 __all__ = [
     "PayPalService",
@@ -63,6 +64,8 @@ __all__ = [
     "dispute_service",
     "FeeOptimizerService",
     "fee_optimizer_service",
+    "LiquidityPoolService",
+    "liquidity_pool_service",
 ]
 
 

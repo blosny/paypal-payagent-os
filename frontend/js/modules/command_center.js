@@ -963,6 +963,174 @@ window.runFleetFeeBenchmark = async function() {
   }
 };
 
+// --------------------------------------------------------------------------
+// 11. Cross-Agent Liquidity Pool & Zero-Interest Advances
+// --------------------------------------------------------------------------
+export async function loadLiquidityPoolStatus() {
+  const totalEl = document.getElementById('pool-total-liquidity');
+  const availEl = document.getElementById('pool-avail-val');
+  const loansEl = document.getElementById('pool-loans-val');
+  const barAvail = document.getElementById('pool-bar-avail');
+  const barLoan = document.getElementById('pool-bar-loan');
+  const tbody = document.getElementById('pool-loans-tbody');
+  const badge = document.getElementById('pool-utilization-badge');
+
+  if (!totalEl && !tbody) return;
+
+  try {
+    const res = await fetch('/api/v1/liquidity-pool/status');
+    if (!res.ok) throw new Error('Failed to load pool status');
+    const data = await res.json();
+
+    if (totalEl) totalEl.innerText = `$${data.total_liquidity_usd.toFixed(2)}`;
+    if (availEl) availEl.innerText = `$${data.available_liquidity_usd.toFixed(2)}`;
+    if (loansEl) loansEl.innerText = `$${data.active_loans_usd.toFixed(2)}`;
+
+    const total = data.total_liquidity_usd || 1;
+    const availPct = Math.min(100, Math.max(0, (data.available_liquidity_usd / total) * 100));
+    const loanPct = Math.min(100, Math.max(0, 100 - availPct));
+
+    if (barAvail) barAvail.style.width = `${availPct}%`;
+    if (barLoan) barLoan.style.width = `${loanPct}%`;
+
+    if (badge) {
+      badge.innerText = `${data.utilization_rate_pct.toFixed(0)}% UTILIZATION`;
+    }
+
+    if (tbody) {
+      tbody.innerHTML = data.active_drawdowns.map(d => {
+        const isActive = d.status === 'ACTIVE';
+        return `
+          <tr>
+            <td style="font-weight:600;">
+              <div>${d.borrower_agent_name}</div>
+              <div class="font-mono" style="font-size:0.65rem; color:#64748b;">${d.borrower_agent_id}</div>
+            </td>
+            <td class="font-mono font-semibold" style="color:#f8fafc;">
+              $${d.amount.toFixed(2)}
+              ${d.repaid_amount > 0 ? `<div style="font-size:0.65rem; color:#34d399;">(Repaid: $${d.repaid_amount.toFixed(2)})</div>` : ''}
+            </td>
+            <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${d.purpose}">
+              ${d.purpose}
+            </td>
+            <td>
+              <span style="font-weight:700; color:#38bdf8;">${d.borrower_fico_score}</span>
+            </td>
+            <td>
+              <span class="${isActive ? 'loan-badge-active' : 'loan-badge-repaid'}">
+                ${isActive ? '● OUTSTANDING' : '✓ REPAID'}
+              </span>
+            </td>
+            <td>
+              ${isActive ? `
+                <button type="button" class="loan-btn-repay" onclick="window.repayPoolLoan('${d.loan_id}', ${d.amount})">
+                  ✓ Repay
+                </button>
+              ` : `
+                <span style="font-size:0.68rem; color:#64748b;">Settled</span>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  } catch (err) {
+    console.error('Error loading liquidity pool:', err);
+  }
+}
+
+window.depositToLiquidityPool = async function() {
+  const btn = document.getElementById('btn-deposit-surplus');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳</span> <span>Sweeping...</span>`;
+  }
+
+  try {
+    const res = await fetch('/api/v1/liquidity-pool/deposit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        agent_id: 'agent-research-01',
+        amount: 100.00,
+      }),
+    });
+
+    if (!res.ok) throw new Error('Deposit failed');
+    const data = await res.json();
+    showToast(`📥 Swept $${data.amount.toFixed(2)} idle surplus from ${data.agent_name} into shared pool!`, 'success');
+    await loadLiquidityPoolStatus();
+  } catch (err) {
+    showToast(`Sweep error: ${err.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span>📥</span> <span>Sweep $100 Surplus to Pool</span>`;
+    }
+  }
+};
+
+window.requestPoolDrawdown = async function() {
+  const borrower = document.getElementById('pool-borrower-select')?.value || 'agent-devops-01';
+  const amount = parseFloat(document.getElementById('pool-amount-input')?.value || '120');
+  const purpose = document.getElementById('pool-purpose-input')?.value || 'Emergency compute burst';
+
+  const btn = document.getElementById('btn-request-drawdown');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳</span> <span>Authorizing Advance...</span>`;
+  }
+
+  try {
+    const res = await fetch('/api/v1/liquidity-pool/drawdown', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        borrower_agent_id: borrower,
+        amount: amount,
+        purpose: purpose,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Drawdown failed');
+    }
+
+    const loan = await res.json();
+    showToast(`⚡ Advance of $${loan.amount.toFixed(2)} disbursed to ${loan.borrower_agent_name} at 0% APR!`, 'success');
+    await loadLiquidityPoolStatus();
+  } catch (err) {
+    showToast(`Drawdown rejected: ${err.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span>⚡</span> <span>Request Peer Liquidity Advance</span>`;
+    }
+  }
+};
+
+window.repayPoolLoan = async function(loanId, amount) {
+  try {
+    const res = await fetch('/api/v1/liquidity-pool/repay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        loan_id: loanId,
+        amount: amount,
+      }),
+    });
+
+    if (!res.ok) throw new Error('Repayment failed');
+    const loan = await res.json();
+    showToast(`✓ Loan ${loan.loan_id} successfully repaid! Funds returned to pool.`, 'success');
+    await loadLiquidityPoolStatus();
+  } catch (err) {
+    showToast(`Repayment error: ${err.message}`, 'error');
+  }
+};
+
+
 
 
 

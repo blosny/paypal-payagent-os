@@ -101,6 +101,15 @@ from .fee_optimizer import (
     FeeOptimizationResult,
     FleetFeeSavingsSummary,
 )
+from .liquidity_pool import (
+    LoanStatus,
+    PoolContribution,
+    PoolDrawdown,
+    PoolStatus,
+    DepositRequest,
+    DrawdownRequest,
+    RepayRequest,
+)
 
 
 
@@ -189,6 +198,13 @@ __all__ = [
     "FeeOptimizationRequest",
     "FeeOptimizationResult",
     "FleetFeeSavingsSummary",
+    "LoanStatus",
+    "PoolContribution",
+    "PoolDrawdown",
+    "PoolStatus",
+    "DepositRequest",
+    "DrawdownRequest",
+    "RepayRequest",
 ]
 
 

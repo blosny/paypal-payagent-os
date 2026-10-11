@@ -512,6 +512,112 @@
         </div>
       </div>
 
+      <!-- Cross-Agent Liquidity Pool (Phase 7 Innovation) -->
+      <div class="cc-card" id="card-liquidity-pool" style="margin-bottom: 2rem;">
+        <div class="cc-card-header">
+          <span class="cc-card-title">
+            <span style="color: #10b981;">🌐</span>
+            <span data-i18n="poolTitle">CROSS-AGENT LIQUIDITY POOL & ZERO-INTEREST ADVANCES</span>
+          </span>
+          <span class="top-kpi-badge badge-green" id="pool-utilization-badge">30% UTILIZATION</span>
+        </div>
+        <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.85rem;" data-i18n="poolDesc">
+          Self-balancing peer liquidity reserves. Agents with surplus daily budgets sweep idle funds into an interest-free shared buffer, enabling peers with compute bursts to draw instant advances validated by FICO credit scores.
+        </p>
+
+        <div class="liquidity-pool-layout">
+          <!-- Left: Pool Health & Actions -->
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <!-- Pool Progress & Key Numbers -->
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;">
+                <span style="font-size: 0.75rem; color: #94a3b8;" data-i18n="poolReserve">Total Fleet Reserves</span>
+                <span id="pool-total-liquidity" class="font-mono" style="font-size: 1.15rem; font-weight: 700; color: #f8fafc;">$600.00</span>
+              </div>
+
+              <!-- Bar: Available vs Borrowed -->
+              <div class="pool-bar-container">
+                <div id="pool-bar-avail" class="pool-bar-available" style="width: 70%;"></div>
+                <div id="pool-bar-loan" class="pool-bar-borrowed" style="width: 30%;"></div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
+                <div class="pool-metric-tile">
+                  <div style="font-size: 0.65rem; color: #64748b;" data-i18n="poolAvail">Available Liquidity</div>
+                  <div id="pool-avail-val" class="font-mono" style="font-size: 0.95rem; font-weight: 700; color: #34d399;">$420.00</div>
+                </div>
+                <div class="pool-metric-tile">
+                  <div style="font-size: 0.65rem; color: #64748b;" data-i18n="poolActiveLoans">Active Advances</div>
+                  <div id="pool-loans-val" class="font-mono" style="font-size: 0.95rem; font-weight: 700; color: #fbbf24;">$180.00</div>
+                </div>
+              </div>
+
+              <!-- Interactive Drawdown Simulator -->
+              <div class="field-group" style="margin-bottom: 0.6rem;">
+                <label style="font-size: 0.75rem;" data-i18n="poolBorrowerAgent">Borrower Agent</label>
+                <select id="pool-borrower-select" class="fin-input">
+                  <option value="agent-devops-01">DevOps Infrastructure Agent (FICO 780)</option>
+                  <option value="agent-research-01">Research AI Lab Agent (FICO 795)</option>
+                  <option value="agent-growth-01">Growth Marketing Agent (FICO 740)</option>
+                </select>
+              </div>
+
+              <div class="field-group" style="margin-bottom: 0.6rem;">
+                <label style="font-size: 0.75rem;" data-i18n="poolLoanAmount">Advance Amount ($)</label>
+                <input type="number" id="pool-amount-input" class="fin-input font-mono" value="120.00" min="10" max="500" step="10">
+              </div>
+
+              <div class="field-group" style="margin-bottom: 0.85rem;">
+                <label style="font-size: 0.75rem;" data-i18n="poolPurpose">Reason / Compute Need</label>
+                <input type="text" id="pool-purpose-input" class="fin-input" value="Burst Fine-Tuning Batch on RunPod GPU">
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <button type="button" class="fin-btn fin-btn-paypal" id="btn-request-drawdown" onclick="window.requestPoolDrawdown()" style="width: 100%; justify-content: center; padding: 0.6rem;">
+                <span>⚡</span> <span data-i18n="btnRequestDrawdown">Request Peer Liquidity Advance</span>
+              </button>
+              <button type="button" class="fin-btn" id="btn-deposit-surplus" onclick="window.depositToLiquidityPool()" style="width: 100%; justify-content: center; padding: 0.45rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;">
+                <span>📥</span> <span data-i18n="btnSweepSurplus">Sweep $100 Surplus to Pool</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Active Peer Loans & Repayment Status -->
+          <div style="background: rgba(15, 23, 42, 0.6); border-radius: 0.75rem; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase;" data-i18n="poolActiveContracts">Active Peer Advances & Contracts</span>
+                <span style="font-size: 0.7rem; color: #64748b;">Interest Rate: <strong style="color: #34d399;">0.00% APR</strong></span>
+              </div>
+              <div style="overflow-x: auto; max-height: 280px; overflow-y: auto;">
+                <table class="pool-loans-table">
+                  <thead>
+                    <tr>
+                      <th data-i18n="thAgent">Borrower</th>
+                      <th data-i18n="thAmount">Principal</th>
+                      <th data-i18n="thPurpose">Purpose</th>
+                      <th data-i18n="thFico">FICO</th>
+                      <th data-i18n="thStatus">Status</th>
+                      <th data-i18n="thAction">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pool-loans-tbody">
+                    <!-- Loaded dynamically via command_center.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Pool Guarantee Footer -->
+            <div style="margin-top: 1rem; padding: 0.65rem 0.85rem; background: rgba(0, 0, 0, 0.25); border-radius: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.04); display: flex; align-items: center; justify-content: space-between; font-size: 0.7rem; color: #94a3b8;">
+              <span>🛡️ Backed by PayPal Vault Corporate Debit Guarantee & Agent FICO Trust Matrix.</span>
+              <span class="font-mono" style="color: #38bdf8;">SEC-POOL-v2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="portal-grid">
         
         <!-- Left Column: Simulator & HITL Queue -->
