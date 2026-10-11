@@ -15,6 +15,7 @@ export async function initCommandCenter() {
     loadROIMetrics(),
     loadTelegramSettings(),
     loadDepartments(),
+    loadDIDCredentials(),
   ]);
 
   setupVoiceBriefing();
@@ -579,5 +580,118 @@ window.submitDeptTransfer = async function() {
     showToast(`Transfer error: ${err.message}`, 'error');
   }
 };
+
+// --------------------------------------------------------------------------
+// 8. W3C DID & Decentralized Agent Wallet Passports
+// --------------------------------------------------------------------------
+export async function loadDIDCredentials() {
+  const container = document.getElementById('did-passports-grid');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/v1/identity/credentials');
+    if (!res.ok) throw new Error('Failed to load credentials');
+    const creds = await res.json();
+
+    container.innerHTML = creds.map(cred => {
+      const isRevoked = cred.status === 'REVOKED';
+
+      const statusBadge = isRevoked
+        ? `<span class="top-kpi-badge" style="background:rgba(239,68,68,0.2); color:#ef4444;">REVOKED</span>`
+        : `<span class="top-kpi-badge badge-success">ACTIVE SEAL</span>`;
+
+      const actionBtn = isRevoked
+        ? `<span style="font-size:0.7rem; color:#ef4444; font-weight:600;">KILLSWITCH ACTIVE</span>`
+        : `<button type="button" class="btn-killswitch" onclick="window.revokeDIDCredential('${cred.credential_id}', '${cred.agent_name}')">
+            ⚠️ Killswitch / Revoke
+          </button>`;
+
+      return `
+        <div class="passport-card ${isRevoked ? 'revoked-passport' : ''}" id="passport-card-${cred.credential_id}">
+          <div>
+            <div class="passport-card-top">
+              <div class="passport-agent-name">
+                <span>🪪</span>
+                ${cred.agent_name}
+              </div>
+              ${statusBadge}
+            </div>
+
+            <div class="did-uri-pill" title="${cred.subject_did}">
+              ${cred.subject_did}
+            </div>
+
+            <div class="passport-specs-row">
+              <div>Single Limit: <strong style="color:#f8fafc;">$${cred.max_single_spend.toFixed(2)}</strong></div>
+              <div>Daily Cap: <strong style="color:#38bdf8;">$${cred.daily_spend_cap.toFixed(2)}</strong></div>
+            </div>
+
+            <div style="font-size:0.7rem; color:#94a3b8; margin-bottom:0.4rem;">
+              Categories: <span style="color:#cbd5e1;">${cred.allowed_categories.join(', ')}</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="passport-seal-row">
+              <span style="display:flex; align-items:center; gap:0.25rem;">
+                <span>🛡️</span> ${cred.proof_type}
+              </span>
+              <button type="button" class="preset-chip" style="font-size:0.65rem; padding:0.15rem 0.4rem;" onclick="window.verifyDIDCredential('${cred.credential_id}')">
+                ✓ Verify Signature
+              </button>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:0.5rem; font-size:0.7rem; color:#64748b;">
+              <span>Mühürleyen: <strong>${cred.issuer_name}</strong></span>
+              ${actionBtn}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+  } catch (err) {
+    console.error('Error loading DID credentials:', err);
+    container.innerHTML = `<div style="color: #64748b; font-size: 0.8rem; padding: 1rem;">DID identity registry offline</div>`;
+  }
+}
+
+window.verifyDIDCredential = async function(credentialId) {
+  try {
+    const res = await fetch('/api/v1/identity/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential_id: credentialId }),
+    });
+    if (!res.ok) throw new Error('Verification call failed');
+    const data = await res.json();
+    if (data.is_valid) {
+      showToast(`✓ Cryptographic Signature Verified! Validated by CFO Elena Rostova.`, 'success');
+    } else {
+      showToast(`✕ Verification Failed: ${data.reason}`, 'warning');
+    }
+  } catch (err) {
+    showToast(`Verification error: ${err.message}`, 'error');
+  }
+};
+
+window.revokeDIDCredential = async function(credentialId, agentName) {
+  const confirmed = confirm(`Are you sure you want to trigger the EMERGENCY KILLSWITCH for ${agentName}? This will immediately revoke their PayPal spending authority.`);
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch(`/api/v1/identity/revoke/${credentialId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason: 'Emergency killswitch activated by CFO Elena' }),
+    });
+    if (!res.ok) throw new Error('Revoke failed');
+    showToast(`🚨 Killswitch Triggered! Spending credential revoked for ${agentName}.`, 'warning');
+    await loadDIDCredentials();
+  } catch (err) {
+    showToast(`Revoke error: ${err.message}`, 'error');
+  }
+};
+
 
 

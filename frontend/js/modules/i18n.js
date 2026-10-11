@@ -182,6 +182,8 @@ export const i18n = {
     deptAmount: 'Transfer Tutarı (USD)',
     deptReason: 'Yeniden Dengeleme Gerekçesi',
     btnDeptTransfer: '✓ Departman Transferini İcra Et',
+    didTitle: 'W3C DID & MERKEZİYETSİZ AJAN CÜZDAN PASAPORTLARI',
+    didDesc: 'CFO Elena Rostova tarafından Ed25519 ile kriptografik olarak imzalanmış Doğrulanabilir Yetki Sertifikaları. Her ajan acil durum killswitch kontrolüne sahip bir harcama pasaportu taşır.',
   },
   en: {
     tagline: 'Autonomous AI Agent Wallet & Payment Orchestration',
@@ -360,6 +362,8 @@ export const i18n = {
     deptAmount: 'Transfer Amount (USD)',
     deptReason: 'Rebalancing Reason / Justification',
     btnDeptTransfer: '✓ Execute Department Transfer',
+    didTitle: 'W3C DID & DECENTRALIZED AGENT WALLET PASSPORTS',
+    didDesc: 'Cryptographically signed Verifiable Credentials (Ed25519) issued by CFO Elena Rostova. Each agent holds a verifiable spending passport with emergency killswitch controls.',
   },
 };
 

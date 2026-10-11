@@ -14,6 +14,7 @@ from .credit import router as credit_router
 from .telegram import router as telegram_router
 from .roi import router as roi_router
 from .tenants import router as tenants_router
+from .identity import router as identity_router
 
 api_v1_router = APIRouter(prefix="/v1")
 api_v1_router.include_router(agents_router, prefix="/agents", tags=["Agents"])
@@ -31,5 +32,7 @@ api_v1_router.include_router(credit_router)
 api_v1_router.include_router(telegram_router)
 api_v1_router.include_router(roi_router)
 api_v1_router.include_router(tenants_router)
+api_v1_router.include_router(identity_router)
+
 
 

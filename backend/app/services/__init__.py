@@ -20,6 +20,7 @@ from .credit_service import CreditService, credit_service
 from .telegram_service import TelegramService, telegram_service
 from .roi_service import ROIService, roi_service
 from .tenant_service import TenantService, tenant_service
+from .did_service import DIDIdentityService, did_service
 
 __all__ = [
     "PayPalService",
@@ -54,5 +55,8 @@ __all__ = [
     "roi_service",
     "TenantService",
     "tenant_service",
+    "DIDIdentityService",
+    "did_service",
 ]
+
 

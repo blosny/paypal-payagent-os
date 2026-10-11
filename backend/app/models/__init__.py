@@ -78,6 +78,15 @@ from .tenant import (
     DepartmentTransferResult,
     TenantSummary,
 )
+from .did import (
+    CredentialStatus,
+    AgentDIDDocument,
+    SpendAuthorityCredential,
+    IssueCredentialRequest,
+    VerifyCredentialRequest,
+    VerificationResult,
+)
+
 
 
 __all__ = [
@@ -147,5 +156,12 @@ __all__ = [
     "DepartmentTransferRequest",
     "DepartmentTransferResult",
     "TenantSummary",
+    "CredentialStatus",
+    "AgentDIDDocument",
+    "SpendAuthorityCredential",
+    "IssueCredentialRequest",
+    "VerifyCredentialRequest",
+    "VerificationResult",
 ]
+
 
