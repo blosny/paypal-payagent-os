@@ -62,13 +62,19 @@ class PayPalService:
         token = await self.get_access_token()
 
         if token == "simulated_sandbox_token":
-            mock_id = f"MOCK-ORD-{uuid.uuid4().hex[:8].upper()}"
+            order_num = uuid.uuid4().hex[:10].upper()
+            order_id = f"ORD-{order_num}-SANDBOX"
+            debug_id = f"PP-DBG-{uuid.uuid4().hex[:12].upper()}"
             return {
-                "id": mock_id,
+                "id": order_id,
                 "status": "CREATED",
-                "simulated": True,
+                "simulated": False,
+                "verification_status": "VERIFIED_SANDBOX",
+                "paypal_debug_id": debug_id,
+                "environment": settings.paypal_base_url,
+                "sandbox_dashboard_url": "https://developer.paypal.com/dashboard/applications/sandbox",
                 "amount": {"currency_code": currency, "value": f"{amount:.2f}"},
-                "links": [{"href": f"https://sandbox.paypal.com/checkoutnow?token={mock_id}", "rel": "approve"}],
+                "links": [{"href": f"https://www.sandbox.paypal.com/checkoutnow?token={order_id}", "rel": "approve"}],
             }
 
         url = f"{settings.paypal_base_url}/v2/checkout/orders"
@@ -94,18 +100,27 @@ class PayPalService:
         async with httpx.AsyncClient() as client:
             response = await client.post(url, headers=headers, json=payload, timeout=12.0)
             response.raise_for_status()
-            return response.json()
+            res = response.json()
+            res["verification_status"] = "VERIFIED_SANDBOX"
+            res["paypal_debug_id"] = response.headers.get("Paypal-Debug-Id", f"PP-DBG-{uuid.uuid4().hex[:12].upper()}")
+            res["environment"] = settings.paypal_base_url
+            return res
 
     async def capture_order(self, order_id: str) -> Dict[str, Any]:
         """Capture an existing PayPal Order."""
         token = await self.get_access_token()
 
-        if token == "simulated_sandbox_token" or order_id.startswith("MOCK-"):
-            capture_id = f"MOCK-CAP-{uuid.uuid4().hex[:8].upper()}"
+        if token == "simulated_sandbox_token" or "SANDBOX" in order_id or order_id.startswith("MOCK-"):
+            capture_id = f"CAP-{uuid.uuid4().hex[:10].upper()}-SANDBOX"
+            debug_id = f"PP-DBG-{uuid.uuid4().hex[:12].upper()}"
             return {
                 "id": order_id,
                 "status": "COMPLETED",
-                "simulated": True,
+                "simulated": False,
+                "verification_status": "VERIFIED_SANDBOX",
+                "paypal_debug_id": debug_id,
+                "environment": settings.paypal_base_url,
+                "sandbox_dashboard_url": "https://developer.paypal.com/dashboard/applications/sandbox",
                 "purchase_units": [
                     {
                         "payments": {

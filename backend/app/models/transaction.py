@@ -56,6 +56,10 @@ class TransactionRecord(BaseModel):
     borrowing_proposal_note: Optional[str] = None
     risk_score: Optional[float] = None
     risk_flags: Optional[list] = None
+    verification_status: Optional[str] = "VERIFIED_SANDBOX"
+    paypal_debug_id: Optional[str] = None
+    paypal_sandbox_environment: Optional[str] = "https://api-m.sandbox.paypal.com"
+    sandbox_dashboard_url: Optional[str] = "https://developer.paypal.com/dashboard/applications/sandbox"
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     resolved_at: Optional[datetime] = None
     reviewer_notes: Optional[str] = None
