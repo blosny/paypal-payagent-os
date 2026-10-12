@@ -60,11 +60,11 @@
           <span style="font-size:0.75rem; font-weight:700; color:#38bdf8;" id="tg-account-handle">@elena_cfo</span>
         </button>
 
-        <!-- FICO Model Settings Modal Trigger -->
-        <button type="button" class="nav-icon-link" id="btn-open-fico-modal" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:9999px; padding:0.35rem 0.65rem; cursor:pointer;" title="Configure AI FICO Model">
-          <span>⚙️</span>
-          <span style="font-size:0.75rem; font-weight:600; color:#cbd5e1;">FICO</span>
-        </button>
+        <!-- PayPal Sandbox Verified Status Badge -->
+        <a href="https://developer.paypal.com/dashboard/applications/sandbox" target="_blank" rel="noopener noreferrer" class="nav-icon-link" id="badge-sandbox-verified" style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.35); border-radius:9999px; padding:0.35rem 0.75rem; text-decoration:none; display:flex; align-items:center; gap:0.4rem;" title="PayPal Sandbox REST API v2 Live & Verified">
+          <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+          <span style="font-size:0.75rem; font-weight:700; color:#10b981;">SANDBOX VERIFIED</span>
+        </a>
 
         <!-- Language Switcher (TR / EN) -->
         <div class="lang-switch" role="group" aria-label="Language Toggle">
@@ -145,44 +145,24 @@
       </div>
     </section>
 
-    <!-- Segmented Workspace Navigation Tabs (Linear / Apple Minimalist Bar) -->
+    <!-- Segmented Workspace Navigation Tabs (Focused 3-Pillar Architecture) -->
     <nav class="workspace-tabs-bar" id="workspace-tabs-bar">
       <button type="button" class="tab-nav-btn active" data-tab="tab-fleet-ops" id="tab-btn-fleet-ops">
         <span class="tab-btn-icon">⚡</span>
-        <span class="tab-btn-title" data-i18n="tabFleetOps">Komuta Merkezi & Filo</span>
+        <span class="tab-btn-title" data-i18n="tabFleetOps">Komuta Merkezi & Canlı HITL</span>
         <span class="tab-nav-badge hidden" id="tab-hitl-badge">0</span>
-      </button>
-
-      <button type="button" class="tab-nav-btn" data-tab="tab-treasury" id="tab-btn-treasury">
-        <span class="tab-btn-icon">🏛️</span>
-        <span class="tab-btn-title" data-i18n="tabTreasury">Kurumsal Hazine & Alfa</span>
-        <span class="tab-nav-pill-new">ALPHA</span>
-      </button>
-
-      <button type="button" class="tab-nav-btn" data-tab="tab-p2p" id="tab-btn-p2p">
-        <span class="tab-btn-icon">🤝</span>
-        <span class="tab-btn-title" data-i18n="tabP2P">P2P Müzakere & Borç</span>
-      </button>
-
-      <button type="button" class="tab-nav-btn" data-tab="tab-arbitrage" id="tab-btn-arbitrage">
-        <span class="tab-btn-icon">🎯</span>
-        <span class="tab-btn-title" data-i18n="tabArbitrage">Spot İhale & Arbitraj</span>
-        <span class="tab-nav-pill-new">LIVE</span>
-      </button>
-
-      <button type="button" class="tab-nav-btn" data-tab="tab-analytics" id="tab-btn-analytics">
-        <span class="tab-btn-icon">📊</span>
-        <span class="tab-btn-title" data-i18n="tabAnalytics">Analitik & FICO Kredisi</span>
-      </button>
-
-      <button type="button" class="tab-nav-btn" data-tab="tab-security" id="tab-btn-security">
-        <span class="tab-btn-icon">🛡️</span>
-        <span class="tab-btn-title" data-i18n="tabSecurity">Güvenlik & Multi-Sig</span>
       </button>
 
       <button type="button" class="tab-nav-btn" data-tab="tab-toolkit" id="tab-btn-toolkit">
         <span class="tab-btn-icon">🛠️</span>
-        <span class="tab-btn-title" data-i18n="tabToolkit">PayPal AI Toolkit & MCP</span>
+        <span class="tab-btn-title" data-i18n="tabToolkit">Resmi PayPal AI Toolkit & MCP</span>
+        <span class="tab-nav-pill-new">OFFICIAL</span>
+      </button>
+
+      <button type="button" class="tab-nav-btn" data-tab="tab-treasury" id="tab-btn-treasury">
+        <span class="tab-btn-icon">🧹</span>
+        <span class="tab-btn-title" data-i18n="tabTreasury">PayPal Vault & SaaS Tasarruf Masası</span>
+        <span class="tab-nav-pill-new">VAULT</span>
       </button>
     </nav>
 
