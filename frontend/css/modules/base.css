@@ -479,97 +479,19 @@ body {
 .workspace-tabs-bar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background: rgba(18, 18, 22, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  gap: 0.3rem;
+  background: rgba(18, 18, 22, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(16px);
-  padding: 0.35rem 0.45rem;
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0.28rem 0.35rem;
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
-  overflow-x: auto;
-}
-
-.tab-nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #a1a1aa;
-  padding: 0.55rem 1.15rem;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-}
-
-.tab-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.22);
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-.tab-nav-btn.active {
-  background: linear-gradient(135deg, rgba(0, 112, 186, 0.45) 0%, rgba(2, 132, 199, 0.25) 100%);
-  border: 1px solid #38bdf8;
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
-}
-
-.tab-btn-icon {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.tab-nav-badge {
-  background: rgba(245, 158, 11, 0.2);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.1rem 0.4rem;
-  border-radius: 9999px;
-}
-
-.tab-nav-pill-new {
-  background: linear-gradient(135deg, #00cfde, #0284c7);
-  color: #ffffff;
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  font-weight: 800;
-  padding: 0.1rem 0.35rem;
-  border-radius: 9999px;
-  letter-spacing: 0.05em;
-  box-shadow: 0 0 8px rgba(0, 207, 222, 0.4);
-}
-
-
-
-/* ==========================================================================
-   Workspace Segmented Tabs Navigation Bar (Linear / Apple Minimalist)
-   ========================================================================== */
-.workspace-tabs-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(18, 18, 22, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-md);
-  padding: 0.4rem 0.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   margin-top: 0.25rem;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  margin-bottom: 0.6rem;
   overflow-x: auto;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .workspace-tabs-bar::-webkit-scrollbar {
@@ -579,14 +501,18 @@ body {
 .tab-nav-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  background: transparent;
-  border: 1px solid transparent;
+  justify-content: center;
+  gap: 0.38rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-sm);
   color: #a1a1aa;
-  padding: 0.55rem 0.95rem;
-  font-size: 0.8rem;
-  font-weight: 500;
+  padding: 0.44rem 0.62rem;
+  font-family: var(--font-sans);
+  font-size: 0.77rem;
+  font-weight: 550;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
@@ -594,52 +520,73 @@ body {
 }
 
 .tab-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
 }
 
 .tab-nav-btn.active {
+  background: linear-gradient(135deg, rgba(0, 112, 186, 0.35) 0%, rgba(2, 132, 199, 0.2) 100%);
+  border: 1px solid #38bdf8;
   color: #ffffff;
-  background: linear-gradient(135deg, rgba(0, 121, 193, 0.18) 0%, rgba(99, 102, 241, 0.18) 100%);
-  border-color: rgba(0, 207, 222, 0.38);
-  box-shadow: 0 2px 12px rgba(0, 112, 186, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  font-weight: 650;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
 .tab-btn-icon {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .tab-btn-title {
   letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .tab-nav-badge {
   background: #f59e0b;
   color: #000000;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.1rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.05rem 0.32rem;
   border-radius: 9999px;
   line-height: 1.2;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
-  animation: pulseBadge 2s infinite ease-in-out;
-}
-
-@keyframes pulseBadge {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.15); opacity: 0.85; }
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.45);
+  flex-shrink: 0;
 }
 
 .tab-nav-pill-new {
   background: linear-gradient(135deg, #00cfde 0%, #3b82f6 100%);
   color: #000000;
-  font-size: 0.58rem;
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
   font-weight: 800;
-  letter-spacing: 0.05em;
-  padding: 0.1rem 0.35rem;
+  letter-spacing: 0.04em;
+  padding: 0.06rem 0.28rem;
   border-radius: 4px;
   line-height: 1.2;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1440px) {
+  .workspace-tabs-bar {
+    gap: 0.25rem;
+    padding: 0.25rem 0.3rem;
+  }
+  .tab-nav-btn {
+    padding: 0.4rem 0.48rem;
+    font-size: 0.735rem;
+    gap: 0.3rem;
+  }
+  .tab-btn-icon {
+    font-size: 0.82rem;
+  }
 }
 
 /* Tab Panes */

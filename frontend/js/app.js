@@ -41,23 +41,25 @@ window.refreshAll = refreshAll;
 
 // Bootstrap Application
 function initApp() {
-  initWorkspaceTabs();
-  initI18n();
-  initFleetEvents(refreshAll);
-  initAnalyticsEvents();
-  initP2PEvents(refreshAll);
-  initArbitrageEvents(refreshAll);
-  initToolkitEvents(refreshAll);
-  initSecurityEvents(refreshAll);
-  initCommandCenter();
+  try { initWorkspaceTabs(); } catch (e) { console.error('WorkspaceTabs init error:', e); }
+  try { initI18n(); } catch (e) { console.error('I18n init error:', e); }
+  try { initFleetEvents(refreshAll); } catch (e) { console.error('FleetEvents init error:', e); }
+  try { initAnalyticsEvents(); } catch (e) { console.error('AnalyticsEvents init error:', e); }
+  try { initP2PEvents(refreshAll); } catch (e) { console.error('P2PEvents init error:', e); }
+  try { initArbitrageEvents(refreshAll); } catch (e) { console.error('ArbitrageEvents init error:', e); }
+  try { initToolkitEvents(refreshAll); } catch (e) { console.error('ToolkitEvents init error:', e); }
+  try { initSecurityEvents(refreshAll); } catch (e) { console.error('SecurityEvents init error:', e); }
+  try { initCommandCenter(); } catch (e) { console.error('CommandCenter init error:', e); }
 
   // Initial Data & Language Boot
-  applyLanguage(appState.currentLang);
-  refreshAll();
-  runStressSimulation();
+  try { applyLanguage(appState.currentLang); } catch (e) { console.error('Language boot error:', e); }
+  try { refreshAll(); } catch (e) { console.error('RefreshAll initial error:', e); }
+  try { runStressSimulation(); } catch (e) { console.error('Stress simulation error:', e); }
 
   // Background Polling Loop (6s)
-  setInterval(refreshAll, 6000);
+  setInterval(() => {
+    refreshAll().catch((e) => console.warn('Polling error:', e));
+  }, 6000);
 }
 
 if (document.readyState === 'loading') {

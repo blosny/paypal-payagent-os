@@ -9,6 +9,18 @@
       "details": "PayPal Sandbox: Hazır (Simülasyon)"
     },
     {
+      "test": "Hero Autonomous Greeting",
+      "details": "Günaydın Elena. Ajan filonuz şirket politikaları dahilinde çalışıyor. Bir işlem incelemenizi bekliyor."
+    },
+    {
+      "test": "KPI Total Fleet Treasury",
+      "details": "$3,185.09"
+    },
+    {
+      "test": "KPI Spent Today",
+      "details": "$128.50"
+    },
+    {
       "test": "Tab Switch: 1. Komuta Merkezi & Filo",
       "details": "Active pane: #tab-fleet-ops"
     },
@@ -45,24 +57,28 @@
       "details": "3 agent cards with live budgets"
     },
     {
-      "test": "Scenario Chip: Limit İçi Otonom Harcama",
-      "details": "Form populated: $15.00 -> AWS"
+      "test": "Category Select Dropdown",
+      "details": "Selected: API Çıkarım Kotası"
     },
     {
-      "test": "Scenario Chip: Limit Aşımı HITL Onay Talebi",
-      "details": "Form populated: $85.00 -> OpenAI"
+      "test": "Scenario Chip: Limit İçi Otonom Harcama ($15 AWS)",
+      "details": "Form: $15.00 -> AWS"
     },
     {
-      "test": "Scenario Chip: Yetkisiz Satıcı Engeli",
-      "details": "Form populated: $25.00 -> UnknownCryptoHost"
+      "test": "Scenario Chip: Limit Aşımı HITL Onay Talebi ($85 OpenAI)",
+      "details": "Form: $85.00 -> OpenAI"
     },
     {
-      "test": "Scenario Chip: Doğrudan Freelance Hakediş",
-      "details": "Form populated: $35.00 -> alex.freelancer@paypal.com"
+      "test": "Scenario Chip: Yetkisiz Satıcı Engeli ($25 Crypto)",
+      "details": "Form: $25.00 -> UnknownCryptoHost"
+    },
+    {
+      "test": "Scenario Chip: Freelance Hakediş ($35 Alex)",
+      "details": "Form: $35.00 -> alex.freelancer@paypal.com"
     },
     {
       "test": "Execute Safe Payment ($15 AWS)",
-      "details": "Captured! Audit trail now has 15 rows"
+      "details": "Instant CAPTURED! Audit rows: 12"
     },
     {
       "test": "Execute Over-Limit Intent ($85)",
@@ -81,8 +97,12 @@
       "details": "Live reload triggered without reload"
     },
     {
+      "test": "HITL Approve Button (.btn-paypal-approve)",
+      "details": "Instant capture settled & badge updated to green"
+    },
+    {
       "test": "Fee Minimizer Smart Router Badge",
-      "details": "81% AVG FEE REDUCTION"
+      "details": "82% AVG FEE REDUCTION"
     },
     {
       "test": "Fee Benchmark Button (#btn-benchmark-fee)",
@@ -90,11 +110,11 @@
     },
     {
       "test": "Evaluate Custom Fee Button (#btn-eval-fee)",
-      "details": "Simulated optimal routing"
+      "details": "Simulated optimal ACH vs Card routing"
     },
     {
       "test": "Liquidity Pool Active Loans",
-      "details": "3 active peer drawdowns loaded"
+      "details": "2 active peer drawdowns loaded"
     },
     {
       "test": "Request Pool Drawdown Button",
@@ -110,7 +130,7 @@
     },
     {
       "test": "Peer-to-Peer Debt Ledger",
-      "details": "4 bilateral agent credit records rendered"
+      "details": "2 bilateral agent credit records rendered"
     },
     {
       "test": "P2P Scenario Chip: Frugal Accept",
@@ -190,7 +210,7 @@
     },
     {
       "test": "SLA Breach Alert Dismissed",
-      "details": "🚨 SLA İhlali Tespit Edildi (%8.5 Hata)! ✓ PayPal İtirazı Açıldı: PP-DISPUTE-D8E61D29 ✓ Otonom İade Kurtarıldı: $16.15"
+      "details": "🚨 SLA İhlali Tespit Edildi (%8.5 Hata)! ✓ PayPal İtirazı Açıldı: PP-DISPUTE-2899FC92 ✓ Otonom İade Kurtarıldı: $16.15"
     },
     {
       "test": "Simulate SLA Breach Button",
@@ -233,8 +253,12 @@
       "details": "Switched interface back to Turkish ('Otonom Ajan Harcama & Cüzdan Orkestrasyonu')"
     },
     {
+      "test": "Voice CFO Briefing Button (#btn-voice-briefing)",
+      "details": "Triggered and toggled Web Speech API audio synthesiser"
+    },
+    {
       "test": "Browser Console Cleanliness",
-      "details": "0 uncaught runtime exceptions across 55+ interactive steps"
+      "details": "0 uncaught runtime exceptions across interactive steps"
     }
   ],
   "failed": [],

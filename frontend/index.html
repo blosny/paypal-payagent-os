@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-blue-500/20">
@@ -197,17 +198,17 @@
           <span>Hızlı Test Senaryoları:</span>
         </div>
         <div class="quick-action-chips">
-          <button type="button" class="qa-chip qa-chip-success" id="chip-pass" data-i18n="chipPass">
-            <span>✓</span> <span>Limit İçi ($15)</span>
+          <button type="button" class="qa-chip qa-chip-success" id="chip-pass">
+            <span>✓</span> <span data-i18n="chipPass">Limit İçi ($15)</span>
           </button>
-          <button type="button" class="qa-chip qa-chip-warning" id="chip-exceed" data-i18n="chipExceed">
-            <span>⚠️</span> <span>Limit Aşımı ($85 HITL)</span>
+          <button type="button" class="qa-chip qa-chip-warning" id="chip-exceed">
+            <span>⚠️</span> <span data-i18n="chipExceed">Limit Aşımı ($85 HITL)</span>
           </button>
-          <button type="button" class="qa-chip qa-chip-danger" id="chip-unauthorized" data-i18n="chipUnknown">
-            <span>🛑</span> <span>Yetkisiz Satıcı</span>
+          <button type="button" class="qa-chip qa-chip-danger" id="chip-unauthorized">
+            <span>🛑</span> <span data-i18n="chipUnknown">Yetkisiz Satıcı</span>
           </button>
-          <button type="button" class="qa-chip qa-chip-primary" id="chip-payout" data-i18n="chipPayout">
-            <span>💸</span> <span>Freelance Payout ($35)</span>
+          <button type="button" class="qa-chip qa-chip-primary" id="chip-payout">
+            <span>💸</span> <span data-i18n="chipPayout">Freelance Payout ($35)</span>
           </button>
         </div>
       </section>
@@ -232,7 +233,9 @@
               <div class="field-group">
                 <label for="sim-agent-select" data-i18n="simCallingAgent">Talebi Yapan Ajan</label>
                 <select id="sim-agent-select" class="fin-input">
-                  <!-- Loaded dynamically via fleet.js -->
+                  <option value="agent-devops">DevOps Sentinel Agent ($1,250.00)</option>
+                  <option value="agent-research">Deep Research Agent ($680.00)</option>
+                  <option value="agent-payout">Freelance Payout Dispatcher ($1,270.00)</option>
                 </select>
               </div>
 
@@ -2038,6 +2041,254 @@ safe_tools = guardian.wrap_tools(toolkit.get_tools())
 
   </div>
 
-  <script type="module" src="/static/js/app.js"></script>
+  <!-- Inline Resilient Event Wiring & Offline/File Protocol Fallback -->
+  <script>
+    (function() {
+      // 1. Toast Notification Fallback
+      window.safeToast = function(msg, type = 'success') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.style.cssText = 'background: #18181b; border: 1px solid rgba(255,255,255,0.15); padding: 0.75rem 1rem; border-radius: 0.5rem; color: #fff; margin-bottom: 0.5rem; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 0.5rem;';
+        const icon = type === 'success' ? '✓' : type === 'warning' ? '⚠️' : 'ℹ️';
+        toast.innerHTML = `<span style="font-weight:700;">${icon}</span><span>${msg}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+      };
+
+      // 2. Immediate Tab Navigation Wiring
+      function wireTabs() {
+        const tabButtons = document.querySelectorAll('.tab-nav-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        if (!tabButtons.length) return;
+
+        tabButtons.forEach(btn => {
+          btn.onclick = function(e) {
+            const targetId = btn.getAttribute('data-tab');
+            if (!targetId) return;
+
+            tabButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            tabPanes.forEach(pane => {
+              if (pane.id === targetId) {
+                pane.classList.remove('hidden-tab');
+                pane.classList.add('active');
+              } else {
+                pane.classList.add('hidden-tab');
+                pane.classList.remove('active');
+              }
+            });
+            try { localStorage.setItem('payagent_active_tab', targetId); } catch(e){}
+          };
+        });
+
+        // Restore tab if saved
+        try {
+          const saved = localStorage.getItem('payagent_active_tab');
+          if (saved && document.getElementById(saved)) {
+            const targetBtn = document.querySelector(`.tab-nav-btn[data-tab="${saved}"]`);
+            if (targetBtn) targetBtn.click();
+          }
+        } catch(e){}
+      }
+
+      // 3. Quick Action Simulator Preset Chips
+      function wireChips() {
+        const agentSel = document.getElementById('sim-agent-select');
+        const amtInp = document.getElementById('sim-amount');
+        const recInp = document.getElementById('sim-recipient');
+        const catSel = document.getElementById('sim-category');
+        const rsnInp = document.getElementById('sim-reasoning');
+
+        const chipPass = document.getElementById('chip-pass');
+        const chipExceed = document.getElementById('chip-exceed');
+        const chipUnauth = document.getElementById('chip-unauthorized');
+        const chipPayout = document.getElementById('chip-payout');
+
+        if (chipPass) {
+          chipPass.onclick = function() {
+            if (agentSel) agentSel.value = 'agent-devops';
+            if (amtInp) amtInp.value = '15.00';
+            if (recInp) recInp.value = 'AWS';
+            if (catSel) catSel.value = 'CLOUD_COMPUTE';
+            if (rsnInp) rsnInp.value = 'Toplu ses deşifre işlemi için AWS spot çalışan düğümü tahsis ediliyor.';
+            window.safeToast('✓ Limit İçi Senaryo ($15 AWS) Yüklendi', 'success');
+          };
+        }
+
+        if (chipExceed) {
+          chipExceed.onclick = function() {
+            if (agentSel) agentSel.value = 'agent-research';
+            if (amtInp) amtInp.value = '85.00';
+            if (recInp) recInp.value = 'OpenAI';
+            if (catSel) catSel.value = 'API_QUOTA';
+            if (rsnInp) rsnInp.value = '50.000 akademik makale için yüksek hacimli embedding modeli kota alımı.';
+            window.safeToast('⚠️ Limit Aşımı Senaryosu ($85 OpenAI HITL) Yüklendi', 'warning');
+          };
+        }
+
+        if (chipUnauth) {
+          chipUnauth.onclick = function() {
+            if (agentSel) agentSel.value = 'agent-devops';
+            if (amtInp) amtInp.value = '25.00';
+            if (recInp) recInp.value = 'UnknownCryptoHost';
+            if (catSel) catSel.value = 'CLOUD_COMPUTE';
+            if (rsnInp) rsnInp.value = 'Beyaz listede olmayan harici sunucudan GPU kiralama denemesi.';
+            window.safeToast('🛑 Yetkisiz Satıcı Senaryosu Yüklendi', 'warning');
+          };
+        }
+
+        if (chipPayout) {
+          chipPayout.onclick = function() {
+            if (agentSel) agentSel.value = 'agent-payout';
+            if (amtInp) amtInp.value = '35.00';
+            if (recInp) recInp.value = 'alex.freelancer@paypal.com';
+            if (catSel) catSel.value = 'FREELANCE_PAYOUT';
+            if (rsnInp) rsnInp.value = 'Grafik tasarım ve UI bileşen teslimi için serbest çalışana hakediş ödemesi.';
+            window.safeToast('💸 Freelance Payout Senaryosu ($35) Yüklendi', 'info');
+          };
+        }
+      }
+
+      // 4. Default Simulated HITL Actions
+      if (!window.approveSimulatedHitl) {
+        window.approveSimulatedHitl = function() {
+          const card = document.getElementById('card-hitl-command');
+          if (card) {
+            card.innerHTML = `
+              <div class="cc-card-header">
+                <span class="cc-card-title"><span style="color:#10b981;">✓</span> <span>İNSAN ONAY MASASI</span></span>
+                <span class="top-kpi-badge badge-success">ONAYLANDI</span>
+              </div>
+              <div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:0.75rem; padding:1.25rem; text-align:center;">
+                <div style="font-size:1.5rem; margin-bottom:0.25rem;">🎉</div>
+                <div style="font-weight:700; color:#10b981; margin-bottom:0.25rem;">İşlem Yetkilendirildi & PayPal Orders v2 İle Tahsil Edildi</div>
+                <div style="font-size:0.8rem; color:#94a3b8;">$240.00 AWS Spot Fleet • Durum: SETTLED • Telegram @elena_cfo bildirildi</div>
+              </div>
+            `;
+          }
+          const pendingEl = document.getElementById('stat-pending');
+          if (pendingEl) pendingEl.innerText = '0';
+          const badgeEl = document.getElementById('badge-hitl-count');
+          if (badgeEl) badgeEl.innerText = '✓ Temiz';
+          window.safeToast('✓ $240.00 PayPal ile onaylandı ve tahsil edildi!', 'success');
+        };
+      }
+
+      if (!window.rejectSimulatedHitl) {
+        window.rejectSimulatedHitl = function() {
+          const card = document.getElementById('card-hitl-command');
+          if (card) {
+            card.innerHTML = `
+              <div class="cc-card-header">
+                <span class="cc-card-title"><span style="color:#ef4444;">✕</span> <span>İNSAN ONAY MASASI</span></span>
+                <span class="top-kpi-badge" style="background:rgba(239,68,68,0.2); color:#ef4444;">REDDEDİLDİ</span>
+              </div>
+              <div style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:0.75rem; padding:1.25rem; text-align:center;">
+                <div style="font-weight:700; color:#ef4444; margin-bottom:0.25rem;">Talep Süpervizör Tarafından Reddedildi</div>
+                <div style="font-size:0.8rem; color:#94a3b8;">DevOps ajanına daha küçük sunucu (c6i.large) seçmesi bildirildi.</div>
+              </div>
+            `;
+          }
+          const pendingEl = document.getElementById('stat-pending');
+          if (pendingEl) pendingEl.innerText = '0';
+          window.safeToast('✕ Harcama talebi reddedildi.', 'warning');
+        };
+      }
+
+      // 5. Top Bar Modals & Controls Wiring
+      function wireTopBar() {
+        // FICO Modal
+        const ficoBtn = document.getElementById('btn-open-fico-modal');
+        const ficoModal = document.getElementById('fico-config-modal');
+        const ficoClose = document.getElementById('btn-close-fico-modal');
+        if (ficoBtn && ficoModal) {
+          ficoBtn.onclick = () => ficoModal.classList.add('active');
+          if (ficoClose) ficoClose.onclick = () => ficoModal.classList.remove('active');
+        }
+
+        // Telegram Modal
+        const tgBtn = document.getElementById('btn-open-telegram-modal');
+        const tgModal = document.getElementById('telegram-settings-modal');
+        const tgClose = document.getElementById('btn-close-telegram-modal');
+        if (tgBtn && tgModal) {
+          tgBtn.onclick = () => tgModal.classList.add('active');
+          if (tgClose) tgClose.onclick = () => tgModal.classList.remove('active');
+        }
+
+        // Language Buttons
+        const btnTr = document.getElementById('btn-lang-tr');
+        const btnEn = document.getElementById('btn-lang-en');
+        if (btnTr && btnEn) {
+          btnTr.onclick = () => {
+            btnTr.classList.add('active');
+            btnEn.classList.remove('active');
+            if (window.applyLanguage) window.applyLanguage('tr');
+          };
+          btnEn.onclick = () => {
+            btnEn.classList.add('active');
+            btnTr.classList.remove('active');
+            if (window.applyLanguage) window.applyLanguage('en');
+          };
+        }
+
+        // Voice Briefing
+        const voiceBtn = document.getElementById('btn-voice-briefing');
+        if (voiceBtn) {
+          voiceBtn.onclick = function() {
+            if ('speechSynthesis' in window) {
+              if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                voiceBtn.innerHTML = `<span>🎙️</span> <span>CFO Sabah Brifingini Dinle</span>`;
+                window.safeToast('Sesli brifing durduruldu.', 'info');
+              } else {
+                const u = new SpeechSynthesisUtterance('Günaydın Elena. PayAgent OS otonom hazine komuta merkezi aktiftir. Ajan filonuz şirket politikaları dahilinde çalışıyor.');
+                u.lang = 'tr-TR';
+                u.onend = () => { voiceBtn.innerHTML = `<span>🎙️</span> <span>CFO Sabah Brifingini Dinle</span>`; };
+                window.speechSynthesis.speak(u);
+                voiceBtn.innerHTML = `<span>⏹️</span> <span>Brifing Dinleniyor...</span>`;
+                window.safeToast('🎙️ Elena Rostova CFO Sesli Brifingi Başlatıldı', 'info');
+              }
+            } else {
+              window.safeToast('Web Speech API bu tarayıcıda desteklenmiyor.', 'warning');
+            }
+          };
+        }
+      }
+
+      // 6. File Protocol Banner
+      function checkProtocol() {
+        if (window.location.protocol === 'file:') {
+          const banner = document.createElement('div');
+          banner.style.cssText = 'background: linear-gradient(90deg, #1e3a8a, #0369a1); color: #ffffff; padding: 0.6rem 1rem; font-size: 0.82rem; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.75rem; position: relative; width: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.5);';
+          banner.innerHTML = `
+            <span>⚡ <strong>Standalone Önizleme Modu:</strong> Canlı PayPal API ve otonom arka uç senkronizasyonu için lütfen tarayıcınızda <strong>http://127.0.0.1:8000</strong> adresini açın.</span>
+            <button onclick="this.parentElement.remove()" style="background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">✕ Kapat</button>
+          `;
+          document.body.prepend(banner);
+        }
+      }
+
+      // Execute on DOM Ready
+      function runBootstrap() {
+        checkProtocol();
+        wireTabs();
+        wireChips();
+        wireTopBar();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runBootstrap);
+      } else {
+        runBootstrap();
+      }
+    })();
+  </script>
+
+  <!-- Load Master Module Application (Both Relative and Absolute Fallback) -->
+  <script type="module" src="js/app.js?v=2.2"></script>
+  <script type="module" src="/static/js/app.js?v=2.2"></script>
 </body>
 </html>
