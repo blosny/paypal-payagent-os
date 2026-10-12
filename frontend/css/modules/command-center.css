@@ -1154,8 +1154,110 @@ input:checked + .toggle-slider:before {
   }
 }
 
-@media (max-width: 640px) {
-  .top-kpis-grid {
+/* Quick Action Scenarios Strip */
+.quick-action-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  backdrop-filter: blur(10px);
+}
+
+.quick-action-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #38bdf8;
+}
+
+.quick-action-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.qa-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qa-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.qa-chip:active {
+  transform: scale(0.97);
+}
+
+.qa-chip-success {
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+.qa-chip-success:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.qa-chip-warning {
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+.qa-chip-warning:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.qa-chip-danger {
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+.qa-chip-danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.qa-chip-primary {
+  border-color: rgba(14, 165, 233, 0.3);
+  color: #38bdf8;
+}
+.qa-chip-primary:hover {
+  background: rgba(14, 165, 233, 0.15);
+  border-color: rgba(14, 165, 233, 0.5);
+}
+
+/* Operational Command Grid (2-Column) */
+.ops-command-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .ops-command-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -164,7 +164,7 @@ pytest tests/ -v
 ---
 
 ## Author
-- **Taha Buğra Çiçek** — Fırat University, Computer Engineering (Senior)
+- **Taha Buğra Çiçek** — Fırat University, Computer Engineering
 - GitHub: [@blosny](https://github.com/blosny)
 
 ---

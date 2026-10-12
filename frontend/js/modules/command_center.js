@@ -3,7 +3,7 @@
 // Vault Subscriptions Cleaner, AI FICO Gauges, Telegram Alerts & Voice CFO
 // ==========================================================================
 
-import { showToast } from './fleet.js';
+import { showToast } from './state.js';
 
 let isSpeaking = false;
 let currentUtterance = null;
