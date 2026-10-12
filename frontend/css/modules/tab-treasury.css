@@ -156,3 +156,30 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
 }
+
+/* Focused 3-Pillar Clean Architecture: Hide Overcomplicated Modules */
+#card-fee-optimizer,
+#card-liquidity-pool,
+#card-did-identity,
+#card-disputes,
+#card-departments,
+#tab-p2p,
+#tab-arbitrage,
+#tab-analytics,
+#tab-security {
+  display: none !important;
+}
+
+.treasury-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+}
+
+.treasury-col {
+  width: 100% !important;
+}
+
+#card-vault-cleaner {
+  width: 100% !important;
+}

@@ -44,7 +44,11 @@ export function initWorkspaceTabs() {
   }
 
   // Restore saved tab or default to tab-fleet-ops
-  const savedTab = localStorage.getItem('payagent_active_tab') || 'tab-fleet-ops';
+  const validTabs = ['tab-fleet-ops', 'tab-toolkit', 'tab-treasury'];
+  let savedTab = localStorage.getItem('payagent_active_tab') || 'tab-fleet-ops';
+  if (!validTabs.includes(savedTab)) {
+    savedTab = 'tab-fleet-ops';
+  }
   if (document.getElementById(savedTab)) {
     activateTab(savedTab);
   }
