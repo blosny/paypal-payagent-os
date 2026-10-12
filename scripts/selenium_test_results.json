@@ -1,0 +1,242 @@
+{
+  "passed": [
+    {
+      "test": "Page Title Loaded",
+      "details": "PayAgent OS — Autonomous AI Agent Financial Infrastructure"
+    },
+    {
+      "test": "PayPal Sandbox Indicator",
+      "details": "PayPal Sandbox: Hazır (Simülasyon)"
+    },
+    {
+      "test": "Tab Switch: 1. Komuta Merkezi & Filo",
+      "details": "Active pane: #tab-fleet-ops"
+    },
+    {
+      "test": "Tab Switch: 2. Kurumsal Hazine & Alfa",
+      "details": "Active pane: #tab-treasury"
+    },
+    {
+      "test": "Tab Switch: 3. P2P Müzakere & Borç",
+      "details": "Active pane: #tab-p2p"
+    },
+    {
+      "test": "Tab Switch: 4. Spot İhale & Arbitraj",
+      "details": "Active pane: #tab-arbitrage"
+    },
+    {
+      "test": "Tab Switch: 5. Analitik & FICO Kredisi",
+      "details": "Active pane: #tab-analytics"
+    },
+    {
+      "test": "Tab Switch: 6. Güvenlik & Multi-Sig",
+      "details": "Active pane: #tab-security"
+    },
+    {
+      "test": "Tab Switch: 7. PayPal AI Toolkit & MCP",
+      "details": "Active pane: #tab-toolkit"
+    },
+    {
+      "test": "Agent Select Options",
+      "details": "3 autonomous agents loaded"
+    },
+    {
+      "test": "Fleet Cards Rendered",
+      "details": "3 agent cards with live budgets"
+    },
+    {
+      "test": "Scenario Chip: Limit İçi Otonom Harcama",
+      "details": "Form populated: $15.00 -> AWS"
+    },
+    {
+      "test": "Scenario Chip: Limit Aşımı HITL Onay Talebi",
+      "details": "Form populated: $85.00 -> OpenAI"
+    },
+    {
+      "test": "Scenario Chip: Yetkisiz Satıcı Engeli",
+      "details": "Form populated: $25.00 -> UnknownCryptoHost"
+    },
+    {
+      "test": "Scenario Chip: Doğrudan Freelance Hakediş",
+      "details": "Form populated: $35.00 -> alex.freelancer@paypal.com"
+    },
+    {
+      "test": "Execute Safe Payment ($15 AWS)",
+      "details": "Captured! Audit trail now has 15 rows"
+    },
+    {
+      "test": "Execute Over-Limit Intent ($85)",
+      "details": "Dispatched to HITL Desk for human inspection"
+    },
+    {
+      "test": "Execute Unauthorized Vendor Intent",
+      "details": "Enforced zero-trust vendor whitelist block"
+    },
+    {
+      "test": "Execute Freelancer Payout Intent",
+      "details": "Processed via PayPal Payouts engine"
+    },
+    {
+      "test": "Audit Refresh Button",
+      "details": "Live reload triggered without reload"
+    },
+    {
+      "test": "Fee Minimizer Smart Router Badge",
+      "details": "81% AVG FEE REDUCTION"
+    },
+    {
+      "test": "Fee Benchmark Button (#btn-benchmark-fee)",
+      "details": "Triggered dynamic rail cost comparison"
+    },
+    {
+      "test": "Evaluate Custom Fee Button (#btn-eval-fee)",
+      "details": "Simulated optimal routing"
+    },
+    {
+      "test": "Liquidity Pool Active Loans",
+      "details": "3 active peer drawdowns loaded"
+    },
+    {
+      "test": "Request Pool Drawdown Button",
+      "details": "Zero-interest credit advance dialog triggered"
+    },
+    {
+      "test": "Deposit Surplus Liquidity Button",
+      "details": "Treasury deposit event triggered"
+    },
+    {
+      "test": "Voice CFO Briefing (Elena Rostova)",
+      "details": "Web Speech API morning synthesis active"
+    },
+    {
+      "test": "Peer-to-Peer Debt Ledger",
+      "details": "4 bilateral agent credit records rendered"
+    },
+    {
+      "test": "P2P Scenario Chip: Frugal Accept",
+      "details": "Auto-configured compliant loan request"
+    },
+    {
+      "test": "Execute P2P Negotiation Flow",
+      "details": "Multi-turn autonomous bargaining simulated"
+    },
+    {
+      "test": "P2P Scenario Chip: Frugal Reject",
+      "details": "Auto-configured over-budget high risk loan"
+    },
+    {
+      "test": "Daily Rollover & Net Settlement",
+      "details": "Autonomous netting and interest calculation completed"
+    },
+    {
+      "test": "Refresh Debts Ledger Button",
+      "details": "Live state polled successfully"
+    },
+    {
+      "test": "Spot Rate Categories Grid",
+      "details": "4 dynamic compute markets active"
+    },
+    {
+      "test": "Arbitrage Chip: GPU Cluster",
+      "details": "Loaded 8x H100 inference tender"
+    },
+    {
+      "test": "Solicit Multi-Vendor Bids",
+      "details": "Reverse Dutch auction gathered live quotes"
+    },
+    {
+      "test": "Execute Winning Bid",
+      "details": "Autonomous PayPal order generated & captured at lowest rate"
+    },
+    {
+      "test": "Arbitrage Chip: Fine-Tuning",
+      "details": "Loaded Llama-3 70B training cluster"
+    },
+    {
+      "test": "Arbitrage Chip: Bulk Embeddings",
+      "details": "Loaded 10M vector embedding task"
+    },
+    {
+      "test": "Refresh Spot Rates Button",
+      "details": "Live provider rates polled"
+    },
+    {
+      "test": "AI FICO Credit Rating Cards",
+      "details": "0 credit risk assessments active"
+    },
+    {
+      "test": "Printable C-Level Executive PDF Report",
+      "details": "Generated modal and closed cleanly"
+    },
+    {
+      "test": "Security Scenario Chip: Safe Verified Invoice",
+      "details": "Loaded security intent #chip-sec-safe"
+    },
+    {
+      "test": "Security Scenario Chip: Prompt Injection Attack Probe",
+      "details": "Loaded security intent #chip-sec-injection"
+    },
+    {
+      "test": "Security Scenario Chip: Recipient Mismatch / Ghost Billing",
+      "details": "Loaded security intent #chip-sec-mismatch"
+    },
+    {
+      "test": "Security Scenario Chip: Typosquatting Phishing Domain",
+      "details": "Loaded security intent #chip-sec-typosquat"
+    },
+    {
+      "test": "Multi-Sig Proposal Creation Button",
+      "details": "Spawned 2-of-3 threshold quorum proposal"
+    },
+    {
+      "test": "SLA Breach Alert Dismissed",
+      "details": "🚨 SLA İhlali Tespit Edildi (%8.5 Hata)! ✓ PayPal İtirazı Açıldı: PP-DISPUTE-D8E61D29 ✓ Otonom İade Kurtarıldı: $16.15"
+    },
+    {
+      "test": "Simulate SLA Breach Button",
+      "details": "Triggered automated PayPal escrow clawback"
+    },
+    {
+      "test": "MCP Filter: Read-Only Tools Filter",
+      "details": "Switched filter #btn-mcp-readonly"
+    },
+    {
+      "test": "MCP Filter: Autonomous Allowed Tools Filter",
+      "details": "Switched filter #btn-mcp-safe"
+    },
+    {
+      "test": "MCP Filter: HITL Required Tools Filter",
+      "details": "Switched filter #btn-mcp-hitl"
+    },
+    {
+      "test": "MCP Filter: Blocked High-Risk Tools Filter",
+      "details": "Switched filter #btn-mcp-blocked"
+    },
+    {
+      "test": "Copy MCP Toolkit SDK Snippet",
+      "details": "Copied ready-to-run Python snippet to clipboard"
+    },
+    {
+      "test": "Telegram Alert Channel Modal",
+      "details": "Opened live settings and dismissed cleanly"
+    },
+    {
+      "test": "AI FICO Weight Configuration Modal",
+      "details": "Opened parameter sliders and dismissed cleanly"
+    },
+    {
+      "test": "Language Toggle -> EN",
+      "details": "Switched interface to English ('Autonomous AI Agent Wallet & Payment Orchestration')"
+    },
+    {
+      "test": "Language Toggle -> TR",
+      "details": "Switched interface back to Turkish ('Otonom Ajan Harcama & Cüzdan Orkestrasyonu')"
+    },
+    {
+      "test": "Browser Console Cleanliness",
+      "details": "0 uncaught runtime exceptions across 55+ interactive steps"
+    }
+  ],
+  "failed": [],
+  "console_errors": []
+}
