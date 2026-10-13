@@ -9,7 +9,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-teal.svg)](https://fastapi.tiangolo.com/)
 [![PayPal: REST API v2](https://img.shields.io/badge/PayPal-REST%20API%20v2-003087.svg)](https://developer.paypal.com/)
 [![PayPal AI Toolkit](https://img.shields.io/badge/PayPal-AI%20Toolkit%20%26%20MCP-0079C1.svg)](https://github.com/paypal/AI-Toolkit)
-[![Test Suite: 32/32 Passed](https://img.shields.io/badge/Tests-32%2F32%20Passed-success.svg)](tests/)
+[![Test Suite: 59/59 Passed](https://img.shields.io/badge/Tests-59%2F59%20Passed-success.svg)](tests/)
 [![Sandbox: Verified](https://img.shields.io/badge/PayPal%20Sandbox-Verified%20Proof-10b981.svg)](https://developer.paypal.com/dashboard/applications/sandbox)
 
 ---
@@ -108,8 +108,8 @@ python scripts/autonomous_agent_runner.py
 
 ### 1. Clone & Setup
 ```bash
-git clone https://github.com/blosny/paypal-payagent-os.git
-cd paypal-payagent-os
+git clone https://github.com/blosny/payagent-os.git
+cd payagent-os
 
 # Create virtual environment
 python -m venv venv
@@ -147,7 +147,7 @@ Open:
 ```bash
 pytest
 ```
-*(All 32 unit, security, and MCP tests pass in ~0.9 seconds).*
+*(All 59 unit, integration, and security tests pass in ~0.5 seconds).*
 
 ---
 
