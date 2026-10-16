@@ -11,6 +11,12 @@
 [![PayPal AI Toolkit](https://img.shields.io/badge/PayPal-AI%20Toolkit%20%26%20MCP-0079C1.svg)](https://github.com/paypal/AI-Toolkit)
 [![Test Suite: 59/59 Passed](https://img.shields.io/badge/Tests-59%2F59%20Passed-success.svg)](tests/)
 [![Sandbox: Verified](https://img.shields.io/badge/PayPal%20Sandbox-Verified%20Proof-10b981.svg)](https://developer.paypal.com/dashboard/applications/sandbox)
+[![Devpost](https://img.shields.io/badge/Devpost-Submission-003E54.svg?logo=devpost)](https://devpost.com/software/payagent-os-u61539)
+[![YouTube Demo](https://img.shields.io/badge/YouTube-Watch%20Demo%20(3m)-FF0000.svg?logo=youtube)](https://youtu.be/1k-yRHFEzN0)
+
+[![Watch Demo Video](https://img.shields.io/badge/▶_Watch_Demo_Video-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/1k-yRHFEzN0)
+[![View on Devpost](https://img.shields.io/badge/Devpost-Project_Showcase-003E54?style=for-the-badge&logo=devpost&logoColor=white)](https://devpost.com/software/payagent-os-u61539)
+
 
 ---
 
